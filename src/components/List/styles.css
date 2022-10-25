@@ -1,3 +1,6 @@
+.container__list{
+  width: 100%;
+}
 .list{
   width: 100%;
   display: flex;
@@ -5,25 +8,32 @@
   background-color: rgba(0, 0, 0, 0.788);
   color: white;
 }
-.listItem{
+.list__title{
+  background-color: white;
+  color: black;
+  height: 60px;
+  font-size: xx-large;
+  padding-top: 3%;
+}
+.list__item{
   display: flex;
   align-items: center;
   border-bottom: 1.5px solid white;
 }
-.listUser{
+.list__user{
   display: flex;
   width: 75%;
   align-items: center;
   margin: 2% 2% 2% 5%;
 }
-.listName{
+.list__name{
   width: 60%;
   margin-left: 2%;
 }
-.listId{
+.list__id{
   display: flex;
 }
-.listUsername{
+.list__username{
   display: flex;
   margin-left: 4%;
 }
@@ -31,10 +41,10 @@ img{
   width: 90px;
   border-radius: 50%;
 }
-.listButton{
+.list__button{
   display: flex;
 }
-button{
+.button{
   justify-content: right;
   width: 80px;
   padding: 3%;

@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import "./styles.css"
+import Modal from '../Modal/index';
 
 function List() {
   const api = `https://www.mocky.io/v2/5d531c4f2e0000620081ddce`;
-  const[ user, setUser ] = useState([])
+  const [user, setUser] = useState([])
+  const [payment, setPayment] = useState([])
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    getApi()
+    getApi() 
   },[])
 
+  // função para acessar uma api externa
   async function getApi(){
     const res = await fetch(api);
     const userApi = await res.json()
     const userData = []
+    /*percorro os dados que vieram da api e insiro no array, 
+      que será setado na const user, através do state*/
     userApi.map(item =>  userData.push({
       ...user,
       id: item.id,
@@ -22,30 +28,55 @@ function List() {
     }))
    setUser([...userData])
   } 
-return(
+  return(
   <>
-     <h1>Lista de Usuários</h1>
-    <div className='list'>
-    {
-      user.map((item, index )=> 
-        <div className='listItem' key={index}>
-          <div className='listUser'>
-            <img src={[item.img]} alt="images"/>
-            <div className='listName'>
-              <div>{[item.name]}</div>
-              <div className='listId'>
-                <div>ID: {[item.id]}</div>
-                <div className='listUsername'>Username: {[item.username]}</div>
+  <div className='container__list'>
+    { 
+    /* o show modal for false, o layout visivel será a lista de usuários, 
+      caso contrário, será o layout do modal*/
+      !showModal ?
+      <div className='list'>
+        <div className='list__title'>Lista de Usuários</div>
+        {
+          /* vamos percorrer a const user, que recebeu os dados dos usuários para 
+            criar a lista na página principal, com nome, imagem e nome de usuário */
+          user.map((item, index )=> 
+            <div className='list__item' key={index}>
+              <div className='list__user'>
+                <img src={[item.img]} alt="images"/>
+                <div className='list__name'>
+                  <div>{[item.name]}</div>
+                  <div className='list__id'>
+                    <div>ID: {[item.id]}</div>
+                    <div className='list__username'>Username: {[item.username]}</div>
+                  </div>
+                </div>
+              </div>
+              <div className='list__button'>
+                <button className='button' onClick={()=>{ 
+                  /*Ao clicar no botão pagar,vamos inserir na const payment , 
+                    o nome do usuário, id, username e para que possamos mandar 
+                    como atributo para o Modal onde será criada a prop */ 
+                  setPayment([item.name, item.username, item.id])
+                  /*Ao escolher o usuário, trocamos o valor da const showModal, 
+                  para que o layput do modal fique visivel*/
+                  setShowModal(true)}}
+                >
+                  Pagar
+                </button>
               </div>
             </div>
-          </div>
-          <div className='listButton'>
-            <button>Pagar</button>
-          </div>
-        </div>
-      )
+          )
     }
-    </div>
+  </div>
+  :
+    <Modal payment={payment} setPayment={setPayment}  onClose={()=>setShowModal(false)}/>
+    /*Aqui estou passando como atributo a const payment e setPayment com os 
+      dados do usuário. E estou criando uma função onClose que vai chamar o 
+      setShowModal, aletrando o valor do showModal para false, e deixando 
+      assim o layout da pagina com usuários visível */
+  }
+  </div>
   </>
   )
 }
