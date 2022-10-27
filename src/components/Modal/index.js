@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import CurrencyInput from 'react-currency-input';
+import Message from '../Message';
 import "./styles.css"
 
 function Modal(props){
   const [sendPayment, setSendPayment] = useState()
+  const [message, setmessage] = useState()
+  const [modalMessage, setModalMessage] = useState(false)
+
   const api = `https://run.mocky.io/v3/533cd5d7-63d3-4488-bf8d-4bb8c751c989`;
   let cards = [
     // valid card
@@ -30,25 +34,31 @@ function Modal(props){
     e.preventDefault()
     const amount = document.querySelector('#modal__value').value
     const card  = document.querySelector('#modal__select').value
-    /* se o cartão for o final x, adiciona esses dados à const sendPayment, 
-    senão adiciona outros dados e depois manda a conts sendPayment, através do méwtodo POST
-    para avaliar se pagamento foi realizado com suucesso ou não */
-    if(card === cards[0].card_number){
-      setSendPayment({
-        name: props.payment[0],
-        card_number: card,
-        amount: amount,
-        cvv: cards[0].cvv,
-        expiry_date: cards[0].expiry_date
-      })
-      } else{
-      setSendPayment({
-        name: props.payment[0],
-        card_number: card,
-        amount: amount,
-        cvv: cards[1].cvv,
-        expiry_date: cards[1].expiry_date
-      })
+   // console.log(amount, 'amount')
+    if(amount === "R$0,00"){
+      alert('Preencha os campos corretamente!')
+      return false;
+    }else if(amount !== "R$0,00"){
+      /* se o cartão for o final x, adiciona esses dados à const sendPayment, 
+      senão adiciona outros dados e depois manda a conts sendPayment, através do méwtodo POST
+      para avaliar se pagamento foi realizado com suucesso ou não */
+      if(card === cards[0].card_number){
+        setSendPayment({
+          name: props.payment[0],
+          card_number: card,
+          amount: amount,
+          cvv: cards[0].cvv,
+          expiry_date: cards[0].expiry_date
+        })
+        } else{
+        setSendPayment({
+          name: props.payment[0],
+          card_number: card,
+          amount: amount,
+          cvv: cards[1].cvv,
+          expiry_date: cards[1].expiry_date
+        })
+      }
     }
     fetch(api,{
       method: "POST",
@@ -60,24 +70,32 @@ function Modal(props){
     }).then((res)=>{
       return res.json()
     }).then((data)=>{
-      if(data.success){
-        console.log( 'pagamento aprovado para')
-      } else{
-        console.log( 'pagamento reprovado')
-      }
+      confimationMessage(data)
     }).catch((err)=>{
        console.log(err)
     })
   }
+  function confimationMessage(data){
+     if(data.success){
+       setmessage('Pagamento concluído com sucesso')
+     } else{
+       setmessage('Pagamento NÂO concluído com suucesso')
+     }
+     setModalMessage(true)
+  }
+
   return(
     /* Essa funçao handleOutsideClick, é para fechar a Modal quando clicar fora da conatiner  */
     <div className='modal' id='modal' onClick={handleOutsideClick}>
-      <div className='modal__container'>
+      { !modalMessage ?
+        <form className='modal__container'>
         {/* Ao clicar n o x dentro do container fechamos a modal*/}
-        <button className='close' onClick={props.onClose}></button>
-        <form className='form__modal'>
-          <div className= "modal__title">Pagamento e listagem de cartões</div>
+        <div className='modal__title'>
           <div className='modal__name' id='modal__name'> Pagamento para {[props.payment[0]]} </div>
+          <div className='buttonClose'><button className='close' onClick={props.onClose}></button></div>
+        </div>
+          
+
            {/* Instalei o Currency Input para fazer a mascara de moeda*/}
           <CurrencyInput
             className="modal__value"
@@ -99,8 +117,12 @@ function Modal(props){
           </select>
           <button onClick={addPayment} className='modal__button'>Pagar</button>
         </form>
+      
+      :
+      <Message sendPayment={sendPayment} setSenPayment={setSendPayment} message={message} closeMessage={()=> props.setShowModal(false)}/>
+    }
       </div>
-    </div>
+ 
   )
 
 }

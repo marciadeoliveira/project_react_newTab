@@ -5,7 +5,7 @@ import Modal from '../Modal/index';
 function List() {
   const api = `https://www.mocky.io/v2/5d531c4f2e0000620081ddce`;
   const [user, setUser] = useState([])
-  const [payment, setPayment] = useState([])
+  const [payment, setPayment] = useState()
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function List() {
   <>
   <div className='container__list'>
     { 
-    /* o show modal for false, o layout visivel será a lista de usuários, 
+    /* o showModal for false, o layout visivel será a lista de usuários, 
       caso contrário, será o layout do modal*/
       !showModal ?
       <div className='list'>
@@ -70,7 +70,7 @@ function List() {
     }
   </div>
   :
-    <Modal payment={payment} setPayment={setPayment}  onClose={()=>setShowModal(false)}/>
+    <Modal payment={payment} setPayment={setPayment} setShowModal={setShowModal} onClose={()=>setShowModal(false)}/>
     /*Aqui estou passando como atributo a const payment e setPayment com os 
       dados do usuário. E estou criando uma função onClose que vai chamar o 
       setShowModal, aletrando o valor do showModal para false, e deixando 

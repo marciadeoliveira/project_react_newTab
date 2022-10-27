@@ -1,0 +1,34 @@
+.container__message{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 500px;
+  height: 300px;
+  border-radius: 5px;
+  text-align: center;
+}
+.message__title{
+  background-color: black;
+  color: white;
+  padding: 3%;
+}
+.msg{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ height: 140px;
+ margin-top:15%;
+}
+.msg__final{
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+.msg__transaction{
+  display: flex;
+  font-size: .8rem;
+  margin-bottom: 5%;
+}
+.msg__button{
+  width: 20%;
+  padding: 1%;
+}
