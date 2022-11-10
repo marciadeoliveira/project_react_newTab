@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import "./styles.css"
 import Modal from '../Modal/index';
+import load from '../../assets/loading.png'
 
 function List() {
   const api = `https://www.mocky.io/v2/5d531c4f2e0000620081ddce`;
   const [user, setUser] = useState([])
   const [payment, setPayment] = useState()
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getApi() 
@@ -14,6 +16,7 @@ function List() {
 
   // função para acessar uma api externa
   async function getApi(){
+    setLoading(true);
     const res = await fetch(api);
     const userApi = await res.json()
     const userData = []
@@ -26,17 +29,27 @@ function List() {
       name: item.name,
       username: item.username,
     }))
+    setLoading(false);
    setUser([...userData])
+   
   } 
   return(
   <>
   <div className='container__list'>
-    { 
+      { 
     /* o showModal for false, o layout visivel será a lista de usuários, 
       caso contrário, será o layout do modal*/
       !showModal ?
       <div className='list'>
         <div className='list__title'>Lista de Usuários</div>
+          { 
+            loading ?
+             <div className='loading'>
+                <img className='loading__img' src={load} alt='loading'/>
+                ... Loading
+             </div>
+            : ''
+          }
         {
           /* vamos percorrer a const user, que recebeu os dados dos usuários para 
             criar a lista na página principal, com nome, imagem e nome de usuário */

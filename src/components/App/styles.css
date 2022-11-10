@@ -6,9 +6,15 @@ body {
   justify-content: center;
 }
 .container{
-  width: 800px;
+  width: 60vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width:768px){
+  .container{
+    width: 80vw;
+  }
 }

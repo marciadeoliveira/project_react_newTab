@@ -94,8 +94,6 @@ function Modal(props){
           <div className='modal__name' id='modal__name'> Pagamento para {[props.payment[0]]} </div>
           <div className='buttonClose'><button className='close' onClick={props.onClose}></button></div>
         </div>
-          
-
            {/* Instalei o Currency Input para fazer a mascara de moeda*/}
           <CurrencyInput
             className="modal__value"

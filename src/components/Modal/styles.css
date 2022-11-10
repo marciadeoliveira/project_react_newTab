@@ -90,3 +90,23 @@
   transform: rotate(-45deg);
 
 }
+@media screen and (max-width:768px){
+  .modal__container{
+    width: 70%;
+  }
+  .modal__name{
+    font-size: 1.3rem;
+    margin-left: 2%;
+  }
+  .modal__value{
+    width: 90%;
+    font-size: 1.3rem;
+  }
+  .modal__select{
+    width: 90%;
+    font-size: 1.3rem;
+  }
+  .modal__button{
+    width: 90%;
+  }
+}

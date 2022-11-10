@@ -1,4 +1,5 @@
 import "./styles.css"
+
 function Message(props){
   function handleOutside(e){
     if(e.target.id === false){
